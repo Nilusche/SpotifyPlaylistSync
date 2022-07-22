@@ -12,7 +12,10 @@ module.exports = {
           200: '#1a1a1a',
           300: "#000000",
         },
-        cgreen: "#1ED760"
+        cgreen: "#1ED760",
+        cgray: "#EEEEEE",
+        cgray2: "#3c3e44",
+        clightgreen: "#19E68C"
       }
     },
     
