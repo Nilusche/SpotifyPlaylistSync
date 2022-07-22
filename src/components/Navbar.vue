@@ -36,7 +36,7 @@
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!-- Profile dropdown -->
         <router-link to="/create" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
-        <router-link to="/playlist" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
+        <router-link to="" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
         <div class="ml-3 relative">
           <div>
             <button type="button" class="bg-gray-800 pr-2 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cgreen focus:ring-cgreen" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
@@ -45,7 +45,7 @@
             </button>
           </div>
         </div>
-        <router-link to="" class="lg:block md:block hidden ml-4 bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Logout</router-link>
+        <span @click="handleLogout" class="lg:block md:block hidden ml-4 hover:cursor-pointer bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Logout</span>
       </div>
     </div>
   </div>
@@ -58,20 +58,24 @@
 
       <router-link to="/playlist" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">My Playlists</router-link>
 
-      <router-link to="" class="text-gray-300 bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Logout</router-link>
+      <span  @click="handleLogout" class="text-gray-300 bg-cblack-100 hover:cursor-pointer hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Logout</span>
 
     </div>
   </div>
 </nav>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            show: false
-        }
-    }
+<script setup>
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+import useLogout from '@/composables/useLogout'
+
+const show = ref(false)
+const router = useRouter()
+const handleLogout = async () => {
+  console.log("loggin out")
+  const res = await useLogout()
+  router.push('/login')
 }
 </script>
 
