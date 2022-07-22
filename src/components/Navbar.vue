@@ -35,9 +35,10 @@
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!-- Profile dropdown -->
-        <router-link to="/create" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
-        <router-link to="" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
-        <div class="ml-3 relative">
+        <router-link v-if="user&& user.uid" to="/create" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
+        <router-link v-if="user&& user.uid" to="" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
+        <router-link v-else to="/login" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Signup/login</router-link>
+        <div class="ml-3 relative " v-if="user&& user.uid">
           <div>
             <button type="button" class="bg-gray-800 pr-2 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cgreen focus:ring-cgreen" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <img class="h-8 w-8 rounded-full" src="https://picsum.photos/50/50" alt="">
@@ -45,7 +46,7 @@
             </button>
           </div>
         </div>
-        <span @click="handleLogout" class="lg:block md:block hidden ml-4 hover:cursor-pointer bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Logout</span>
+        <span v-if="user&& user.uid" @click="handleLogout" class="lg:block md:block hidden ml-4 hover:cursor-pointer bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Logout</span>
       </div>
     </div>
   </div>
@@ -54,12 +55,12 @@
   <div class="sm:hidden" id="mobile-menu" v-if="show">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <router-link to="/create" class="text-white hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Create Playlist</router-link>
+      <router-link  v-if="user && user.uid" to="/create" class="text-white hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Create Playlist</router-link>
 
-      <router-link to="/playlist" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">My Playlists</router-link>
+      <router-link v-if="user&& user.uid" to="" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">My Playlists</router-link>
 
-      <span  @click="handleLogout" class="text-gray-300 bg-cblack-100 hover:cursor-pointer hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Logout</span>
-
+      <span v-if="user&& user.uid" @click="handleLogout" class="text-gray-300 bg-cblack-100 hover:cursor-pointer hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Logout</span>
+      <router-link v-else to="/login" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Signup/Login</router-link>
     </div>
   </div>
 </nav>
@@ -68,14 +69,16 @@
 <script setup>
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
-import useLogout from '@/composables/useLogout'
+import useLogout from '@/composables/useLogout.js'
+import getUser from '@/composables/getUser.js'
 
+
+const {user} = getUser()
 const show = ref(false)
 const router = useRouter()
 const handleLogout = async () => {
-  console.log("loggin out")
   const res = await useLogout()
-  router.push('/login')
+  user = null
 }
 </script>
 
