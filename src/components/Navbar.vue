@@ -35,7 +35,7 @@
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!-- Profile dropdown -->
-        <router-link to="" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
+        <router-link to="/create" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
         <router-link to="/playlist" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
         <div class="ml-3 relative">
           <div>
@@ -54,7 +54,7 @@
   <div class="sm:hidden" id="mobile-menu" v-if="show">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <router-link to="" class="text-white hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Create Playlist</router-link>
+      <router-link to="/create" class="text-white hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Create Playlist</router-link>
 
       <router-link to="/playlist" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">My Playlists</router-link>
 
