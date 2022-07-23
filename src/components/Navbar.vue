@@ -36,7 +36,7 @@
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!-- Profile dropdown -->
         <router-link v-if="user&& user.uid" to="/create" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
-        <router-link v-if="user&& user.uid" to="" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
+        <router-link v-if="user&& user.uid" to="myplaylists" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
         <router-link v-else to="/login" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Signup/login</router-link>
         <div class="ml-3 relative " v-if="user&& user.uid">
           <div>
@@ -57,7 +57,7 @@
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <router-link  v-if="user && user.uid" to="/create" class="text-white hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Create Playlist</router-link>
 
-      <router-link v-if="user&& user.uid" to="" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">My Playlists</router-link>
+      <router-link v-if="user&& user.uid" to="/myplaylists" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">My Playlists</router-link>
 
       <span v-if="user&& user.uid" @click="handleLogout" class="text-gray-300 bg-cblack-100 hover:cursor-pointer hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Logout</span>
       <router-link v-else to="/login" class="text-gray-300 hover:bg-cblack-100 hover:text-cgreen block px-3 py-2 rounded-md text-base font-medium">Signup/Login</router-link>
@@ -77,8 +77,9 @@ const {user} = getUser()
 const show = ref(false)
 const router = useRouter()
 const handleLogout = async () => {
+  router.push('/')
   const res = await useLogout()
-  user = null
+  router.push('/login')
 }
 </script>
 

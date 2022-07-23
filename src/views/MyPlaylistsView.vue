@@ -1,8 +1,9 @@
 <template>
   <div>
     <Navbar/>
+      <div class="main text-center text-white text-4xl font-bold mt-6">My Playlists</div>
       <div class="main text-center mt-16" v-for="doc in docs" :key="doc.id">
-        <ListView :document="doc" :url="doc.url" class=""/>
+        <ListView v-if="user.uid == doc.userId" :document="doc" :url="doc.url" class=""/>
       </div>
   </div>
 </template>
@@ -14,7 +15,9 @@ import getCollection  from '@/composables/getCollection.js';
 import { projectFirestore } from '@/firebase/config';
 import { onMounted } from 'vue';
 import {ref} from 'vue'
+import getUser from '@/composables/getUser.js';
 
+const {user} = getUser()
 
 const docs = ref('')
 
