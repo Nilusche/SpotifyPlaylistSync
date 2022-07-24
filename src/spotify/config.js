@@ -130,7 +130,7 @@ const APIController = (function() {
         let url = "https://accounts.spotify.com/authorize";
         url += "?client_id=" + clientId;
         url += "&response_type=code";
-        url += "&redirect_uri=" + "http://localhost:8080/";
+        url += "&redirect_uri=" + "https://spotifyplaylistplatform.web.app";
         url += "&show_dialog=true";
         url += "&scope=user-read-private user-read-email user-modify-playback-state playlist-modify-public user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
         window.location.href = url; // Show Spotify's authorization screen
@@ -143,7 +143,7 @@ const APIController = (function() {
                 'Content-Type' : 'application/x-www-form-urlencoded',
                 'Authorization' : 'Basic ' + btoa(clientId + ':' + clientSecret)
             },
-            body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=http://localhost:8080/'
+            body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=https://spotifyplaylistplatform.web.app'
         });
         
         const data = await result.json();
