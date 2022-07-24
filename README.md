@@ -1,4 +1,7 @@
-# play
+# Spotfiy Playlist Synchronizer
+Platform to exchange playlist and add them to Spotify.
+#Link
+https://spotifyplaylistplatform.web.app/
 
 ## Project setup
 ```
