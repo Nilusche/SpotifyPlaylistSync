@@ -36,7 +36,9 @@ const {user} = getUser()
 const handleCreate = async () => {
   if(file.value){
     await uploadFile(file.value)
-    let data = {
+    
+  }
+  let data = {
       title: title.value,
       description: description.value,
       userId: user.value.uid,
@@ -47,11 +49,10 @@ const handleCreate = async () => {
       createdAt: timestamp()
     }
     await addDoc(data)
-    if(!error){
-      console.log("Playlist added")
-    }
-
+  if(!error){
+    console.log("Playlist added")
   }
+
   router.push('/')
   
 }
