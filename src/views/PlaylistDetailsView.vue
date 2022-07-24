@@ -4,7 +4,8 @@
     <div class="flex justify-center bg-clightgreen">
         <div class="main text-center mt-16 text-black font-bold flex p-5 w-8/12  flex-col lg:flex-row">
           <div class="flex flex-col items-center">
-             <img :src="docu.url" alt="" class="rounded-lg object-fit w-72 h-64 ">
+             <img v-if="docu.url" :src="docu.url" alt="" class="rounded-lg object-fit w-72 h-64 ">
+             <img v-else src="../assets/fallbackimage.jpg" alt="" class="rounded-lg object-fit w-72 h-64 ">
              <p class="text-3xl mt-3 w-72 font-extrabold">{{docu.title}}</p>
              <p class="w-72 mt-2 text-sm text-zinc-600">Created by {{docu.userName}}</p>
             <p class="text-sm w-72 mt-7 font-medium">{{docu.description}}</p>

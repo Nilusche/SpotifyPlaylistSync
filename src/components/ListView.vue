@@ -3,7 +3,8 @@
   <div class="text-white font-bold flex justify-center -mb-10">
     <div class="rounded-xl flex  p-5 shadow-md w-7/12 bg-cgray2 mb-12 hover:cursor-pointer transition ease-in-out hover:scale-110">
         <div class="object-cover w-28 mr-5">
-            <img :src="url" :alt="document.title" class="rounded-lg duration-100">
+            <img v-if="url" :src="url" :alt="document.title" class="rounded-lg duration-100">
+            <img v-else src="../assets/fallbackimage.jpg" alt="" class="rounded-lg duration-100">
         </div>
         <div class="grow">
             <div class="flex w-full items-center justify-between border-b pb-3">
