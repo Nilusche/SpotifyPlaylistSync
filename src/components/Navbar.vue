@@ -38,11 +38,11 @@
         <router-link v-if="user&& user.uid" to="/create" class="lg:block hidden md:block rounded-full hover:bg-cblack-100 hover:text-cgreen px-3 py-2 text-sm  font-bold">Create Playlist</router-link>
         <router-link v-if="user&& user.uid" to="myplaylists" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">My Playlists</router-link>
         <router-link v-else to="/login" class="lg:block hidden md:block ml-3  hover:bg-cblack-100 hover:text-cgreen px-3 py-2 rounded-full text-sm font-bold">Signup/login</router-link>
-        <div class="ml-3 relative " v-if="user&& user.uid">
+        <div class="ml-3 relative " v-if="user&& user.uid && !user_token">
           <div>
-            <button type="button" class="bg-gray-800 pr-2 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cgreen focus:ring-cgreen" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <img class="h-8 w-8 rounded-full" src="https://picsum.photos/50/50" alt="">
-              <span class="mt-1 bg-gray-800">Profile</span>
+            <button @click="syncToSpotify" type="button" class="bg-gray-800 pr-2 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cgreen focus:ring-cgreen" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+              <img class="h-8 w-8 rounded-full" src="../assets/logo.png" alt="">
+              <span class="mt-1 bg-gray-800">Spotify Login/Sync</span>
             </button>
           </div>
         </div>
@@ -71,16 +71,47 @@ import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import useLogout from '@/composables/useLogout.js'
 import getUser from '@/composables/getUser.js'
+import ApiController from '@/spotify/config.js';
+import { onMounted } from 'vue';
+import { projectFirestore } from '@/firebase/config';
 
-
+const {getAuthorization,getAccessToken} = ApiController()
 const {user} = getUser()
 const show = ref(false)
 const router = useRouter()
+const user_token = ref(null)
+
+
+onMounted(async () => {
+  
+  let params = (new URL(document.location)).searchParams;
+  let code = params.get('code');
+  if(code){
+    const token = await getAccessToken(code);
+    await projectFirestore.collection('users').doc(user.value.uid).set({
+      accessToken: token
+    }, { merge: true });
+  }
+
+  user_token.value = await projectFirestore.collection('users').doc(user.value.uid).get().then(doc => {
+    return doc.data().accessToken
+  })
+})
+
 const handleLogout = async () => {
   router.push('/')
+  await projectFirestore.collection('users').doc(user.value.uid).set({
+    accessToken: null
+  }, { merge: true });
   const res = await useLogout()
+  user_token.value = null
   router.push('/login')
 }
+
+const syncToSpotify = async () => {
+  await getAuthorization()
+}
+
 </script>
 
 <style>
