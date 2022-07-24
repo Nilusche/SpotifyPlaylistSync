@@ -91,13 +91,48 @@ const APIController = (function() {
         return data.id;
     }
 
+    const _createPlaylist = async (token, userId, name, description) => {
+        const result = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+            method: 'POST',
+            headers: { 'Authorization' : 'Bearer ' + token},
+            body: JSON.stringify({
+                name: name,
+                description: description
+            })
+        })
+       
+        const data = await result.json();
+        return data;
+    }
+
+    const _getMyPlaylists = async (token) => {
+        const result = await fetch(`https://api.spotify.com/v1/me/playlists`, {
+            method: 'GET',
+            headers: { 'Authorization' : 'Bearer ' + token}
+        })
+        const data = await result.json();
+        return data.items;
+    }
+
+    const _addTracksToPlaylist = async (token, playlistId, tracks) => {
+        const result = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            method: 'POST',
+            headers: { 'Authorization' : 'Bearer ' + token},
+            body: JSON.stringify({
+                uris: tracks
+            })
+        })
+        const data = await result.json();
+        return data;
+    }
+
     const requestAuthorization = async () => {
         let url = "https://accounts.spotify.com/authorize";
         url += "?client_id=" + clientId;
         url += "&response_type=code";
         url += "&redirect_uri=" + "http://localhost:8080/";
         url += "&show_dialog=true";
-        url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
+        url += "&scope=user-read-private user-read-email user-modify-playback-state playlist-modify-public user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
         window.location.href = url; // Show Spotify's authorization screen
     }
 
@@ -114,6 +149,9 @@ const APIController = (function() {
         const data = await result.json();
         return data.access_token;
     }
+   
+
+
 
     return {
         getToken() {
@@ -142,7 +180,17 @@ const APIController = (function() {
         },
         getAccessToken(code){
             return _getAccessToken(code);
+        },
+        createPlaylist(token, userId, name, description){
+            return _createPlaylist(token, userId, name, description);
+        },
+        getMyPlaylists(token){
+            return _getMyPlaylists(token);
+        },
+        addTracksToPlaylist(token, playlistId, tracks){
+            return _addTracksToPlaylist(token, playlistId, tracks);
         }
+
     }
 });
 

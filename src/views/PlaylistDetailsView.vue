@@ -9,7 +9,7 @@
              <p class="w-72 mt-2 text-sm text-zinc-600">Created by {{docu.userName}}</p>
             <p class="text-sm w-72 mt-7 font-medium">{{docu.description}}</p>
             <button @click="handleDeletion" v-if="user.uid == docu.userId" class="px-4 py-2 rounded-full bg-white mt-10 hover:bg-gray-100 hover:cursor-pointer hover:scale-110 ">Delete Playlist</button>
-            <button @click="syncToSpotify" v-if="user.uid == docu.userId" class="px-4 py-2 rounded-full bg-clightgreen mt-4 border border-white hover:bg-cgreen hover:cursor-pointer hover:scale-110 ">Add Playlist to Spotify</button>
+            <button @click="syncToSpotify" v-if="token" class="px-4 py-2 rounded-full bg-clightgreen mt-4 border border-white hover:bg-cgreen hover:cursor-pointer hover:scale-110 ">Add Playlist to Spotify</button>
           </div>
           <div class="flex-grow">
               <div class="lg:ml-24 lg:mt-0 mt-8" v-for="element in docu.songs" :key="element">
@@ -65,6 +65,7 @@ import {useRoute, useRouter} from 'vue-router'
 import getUser from '@/composables/getUser.js';
 import useStorage from '@/composables/useStorage.js';
 import ApiController from '@/spotify/config.js';
+import { useToast } from "vue-toastification";
 
 const showform = ref(true)
 const route = useRoute()
@@ -73,20 +74,27 @@ const docu = ref('')
 const {user} = getUser()
 const {deleteFile} = useStorage()
 const searchresuls = ref([])
-const {getTracks, getToken, getAuthorization} = ApiController()
+const {getTracks, getUserid, createPlaylist, addTracksToPlaylist} = ApiController()
 const searchword = ref('')
 const selected = ref([])
+const toast = useToast();
+const token = ref('')
 
 
 const syncToSpotify = async () => {
-  const token = await getAuthorization()
+  const uid = await getUserid(token.value)
+  const createdPlaylist = await createPlaylist(token.value, uid, docu.value.title, docu.value.description);
+  const trackuris = docu.value.songs.map(song => song.uri)
+  const addedTracks = await addTracksToPlaylist(token.value, createdPlaylist.id, trackuris)
+
+
+  toast.success("Playlist added to Spotify");
 }
 
 const addToSelected = (track)=> {
   selected.value.push(track)
   const searchid = 'searchcontainer' + '_' +track.id;
   document.getElementById(searchid).style.backgroundColor= '#1ED760';
-  console.log(selected.value)
 }
 
 const searchSongs = async () => {
@@ -106,7 +114,8 @@ const handleAddSong = async () => {
       artist: element.artists[0].name,
       album: element.album.name,
       album_image: element.album.images[2].url,
-      track_url: element.external_urls.spotify
+      track_url: element.external_urls.spotify,
+      uri: element.uri
     })
   }); 
   
@@ -139,7 +148,7 @@ onMounted(async ()=>{
   const snapshot = await projectFirestore.collection('playlists').get();
   let results = []
   snapshot.docs.map(doc => doc.data().createdAt && results.push({...doc.data(), id: doc.id}));
-  
+  token.value = await (await projectFirestore.collection('users').doc(user.value.uid).get()).data().accessToken
   results.forEach(doc => {
     if(doc.id === route.params.id){
       docu.value = doc;

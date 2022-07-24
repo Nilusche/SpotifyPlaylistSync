@@ -92,7 +92,7 @@ onMounted(async () => {
       accessToken: token
     }, { merge: true });
   }
-
+  
   user_token.value = await projectFirestore.collection('users').doc(user.value.uid).get().then(doc => {
     return doc.data().accessToken
   })
