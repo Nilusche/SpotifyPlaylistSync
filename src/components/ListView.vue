@@ -12,7 +12,7 @@
                 <div class="text-lg font-bold text-w:ite-700">{{document.title}}</div>
             </div>
             <div class="flex items-center space-x-8">
-                <div v-if="document.songs && document.songs.length==1" class="text-xs text-neutral-300">{{document.songs.length}} Song</div>
+                <div v-if="document.songs && document.songs.length>0" class="text-xs text-neutral-300">{{document.songs.length}} Song</div>
                 <div v-else class="text-xs text-neutral-300">0 Songs</div>
             </div>
             </div>
