@@ -1,5 +1,7 @@
-# Spotfiy Playlist Synchronizer
-Platform to exchange playlist and add them to Spotify. Build using Vue and Firebase
+# Spotify Playlist Synchronizer
+Platform to exchange playlist and add them to Spotify. <br>
+Build using Vue and Firebase.<br>
+Learned a ton about the Spotify-api, Firebase Authentication, Firebase Storage and the Composition API in Vue.
 # Link
 https://spotifyplaylistplatform.web.app/
 
