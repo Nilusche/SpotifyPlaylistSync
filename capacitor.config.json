@@ -1,0 +1,6 @@
+{
+  "appId": "com.playlistsync.app",
+  "appName": "spotifyplaylistsync",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
