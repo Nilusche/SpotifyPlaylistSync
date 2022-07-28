@@ -34,8 +34,8 @@
                   </div>
                   <div @click="addToSelected(track)" :id="'searchcontainer_'+track.id" v-for="track in searchresuls" :key="track.id" class="mt-4 border border-green-400 rounded-lg p-2 hover:cursor-pointer hover:bg-gray-100 flex justify-between">
                       <div class="flex">
-                        <div class="mr-2">
-                          <img :src="track.album.images[2].url" alt="">
+                        <div class="mr-2 ">
+                          <img :src="track.album.images[2].url" alt="" class="min-w-full min-h-full">
                         </div>
                         <div>
                           <div>{{track.name}}</div>
@@ -44,7 +44,7 @@
                           </span>
                         </div>
                       </div>
-                      <div class="flex flex-col justify-center ml-4 text-gray-400">
+                      <div class="lg:flex lg:flex-col lg:justify-center md:flex md:flex-col md:justify-center hidden ml-4 text-gray-400 text-right">
                         <span>{{track.album.name}}</span>
                       </div>
                   </div>
