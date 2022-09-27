@@ -5,6 +5,9 @@ Learned a ton about the Spotify-api, Firebase Authentication, Firebase Storage a
 # Link
 https://spotifyplaylistplatform.web.app/
 
+## Quick Link to Software Requirements Specification
+[SRS](SpotifyPlaylistSync_Software_Requirements_Specification.pdf)
+
 ## Project setup
 ```
 npm install
